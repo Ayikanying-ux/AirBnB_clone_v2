@@ -1,14 +1,16 @@
-"""Module implements database storage"""
+#!/usr/bin/python3
+'''database storage engine'''
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from os import getenv
-from models.base_model import Base, BaseModel
+from models.amenity import Amenity
+from models.base_model import Base
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-from models.amenity import Amenity
+
 
 classes = {"Amenity": Amenity, "City": City,
            "Place": Place, "Review": Review, "State": State,
@@ -17,6 +19,18 @@ classes = {"Amenity": Amenity, "City": City,
 
 class DBStorage:
     """Defines class for database storage"""
+=======
+from os import getenv
+
+if getenv('HBNB_TYPE_STORAGE') == 'db':
+    from models.place import place_amenity
+
+classes = {"User": User, "State": State, "City": City,
+           "Amenity": Amenity, "Place": Place, "Review": Review}
+
+
+class DBStorage:
+    '''database storage engine for mysql storage'''
     __engine = None
     __session = None
 
@@ -71,3 +85,7 @@ class DBStorage:
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self):
+        """closes the working SQLAlchemy session"""
+        self.__session.close()
