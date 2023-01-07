@@ -19,7 +19,6 @@ classes = {"Amenity": Amenity, "City": City,
 
 class DBStorage:
     """Defines class for database storage"""
-=======
 from os import getenv
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
@@ -75,7 +74,7 @@ class DBStorage:
 
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
-        if obj not None:
+        if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
